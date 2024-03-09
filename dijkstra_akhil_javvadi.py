@@ -67,6 +67,107 @@ def checkInputFeasibility(x_start, y_start, x_goal, y_goal, map):
     
     return input_flag
 
+# Function to Move Top 
+def actionMoveTop(CurrentNode,map):
+
+    NextNode = list(CurrentNode)
+    if(NextNode[1]-1 > 0) and (not isObstacle(map, NextNode[1]-1, NextNode[0])):
+        Status = True
+        NextNode[1] = NextNode[1] - 1 
+    else:
+        Status = False   
+
+    return (Status, NextNode)
+
+# Function to Move diagonally top right of cost 1.4
+def actionMoveTopRight(CurrentNode,map):
+
+    NextNode = list(CurrentNode)
+    
+    if(NextNode[1]-1 > 0) and (NextNode[0]+1 <map.shape[1]) and (not isObstacle(map, NextNode[1]-1, NextNode[0])):
+        Status = True
+        NextNode[0] = NextNode[0] + 1 
+        NextNode[1] = NextNode[1] - 1
+    else:
+        Status = False   
+
+    return (Status, NextNode)
+
+# Function to Move Right diagonally
+def actionMoveRight(CurrentNode,map):
+    
+    NextNode = list(CurrentNode)
+    if(NextNode[0]+1 <map.shape[1]) and (not isObstacle(map, NextNode[1], NextNode[0]+1)):
+        Status = True
+        NextNode[0] = NextNode[0] + 1 
+    else:
+        Status = False   
+
+    return (Status, NextNode)
+
+# Function to Move Bottom Right
+def actionMoveBottomRight(CurrentNode,map):
+    
+    NextNode = list(CurrentNode)
+    if(NextNode[1]+1 < map.shape[0]) and (NextNode[0]+1 <map.shape[1]) and (not isObstacle(map, NextNode[1]+1, NextNode[0]+1)):
+        Status = True
+        NextNode[0] = NextNode[0] + 1 
+        NextNode[1] = NextNode[1] + 1
+    else:
+        Status = False   
+
+    return (Status, NextNode)
+
+# Function to Move Bottom
+def actionMoveBottom(CurrentNode,map):
+    
+    NextNode = list(CurrentNode)
+    if(NextNode[1]+1 < map.shape[0]) and (not isObstacle(map, NextNode[1]+1, NextNode[0])):
+        Status = True 
+        NextNode[1] = NextNode[1] + 1
+    else:
+        Status = False   
+
+    return (Status, NextNode)
+
+# Function to Move Bottom Left(Diagonally)
+def actionMoveBottomLeft(CurrentNode,map):
+    
+    NextNode = list(CurrentNode)
+    if(NextNode[1]+1 < map.shape[0]) and (NextNode[0]-1 >0) and (not isObstacle(map, NextNode[1]+1, NextNode[0]-1)):
+        Status = True 
+        NextNode[0] = NextNode[0] - 1
+        NextNode[1] = NextNode[1] + 1
+    else:
+        Status = False   
+
+    return (Status, NextNode)
+
+# Function to Move Left
+def actionMoveLeft(CurrentNode,map):
+    
+    NextNode = list(CurrentNode)
+    if(NextNode[0]-1 > 0) and (not isObstacle(map, NextNode[1], NextNode[0]-1)):  
+        Status = True 
+        NextNode[0] = NextNode[0] - 1
+    else:
+        Status = False   
+
+    return (Status, NextNode)
+
+# Function to Move Top Left (Diagonally)
+def actionMoveTopLeft(CurrentNode,map):
+    
+    NextNode = list(CurrentNode)
+    if(NextNode[1]-1 > 0) and (NextNode[0]-1 > 0) and (not isObstacle(map, NextNode[1]-1, NextNode[0]-1)):
+        Status = True 
+        NextNode[0] = NextNode[0] - 1
+        NextNode[1] = NextNode[1] - 1
+    else:
+        Status = False   
+
+    return (Status, NextNode)
+
 # Calling the map generating functions 
 if __name__ == '__main__':
 # display map with original obstracles  
