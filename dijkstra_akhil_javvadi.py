@@ -168,6 +168,47 @@ def actionMoveTopLeft(CurrentNode,map):
 
     return (Status, NextNode)
 
+#checking the goal node is reached
+def isGoalNode(CurrentNode, goalNode):
+
+    if list(CurrentNode) == goalNode:
+        return True
+    else:
+        return False
+    
+# Implementing back_Tracking_Algo algorithm to trace the shortest path 
+def back_Tracking_Algo(goalNode, startNode, closed_list, map):
+    video_writer = cv.VideoWriter_fourcc(*'mp4v')
+    out = cv.VideoWriter('project2_1.mp4',video_writer,1000,(600,250)) # Saving the recorded video
+    
+    final_parent = closed_list.get(tuple(goalNode))   
+    cv.line(map, tuple(goalNode), tuple(final_parent), (255,0,0), 1)
+
+    parent_node_keys = closed_list.keys()
+    for key in parent_node_keys:
+        if key is not tuple(startNode):   
+            map[key[1]][key[0]] = [255,255,255]
+            cv.circle(map,tuple(startNode),5,(0,255,0),-1)
+            out.write(map)
+        cv.circle(map,tuple(goalNode),5,(0,255,0),-1)
+        
+        cv.imshow("Path Generation",map)
+        cv.waitKey(1)
+
+    while True:
+        key = closed_list.get(tuple(final_parent))    
+        
+        cv.line(map, tuple(key), tuple(final_parent), (255,0,0), 1)
+        out.write(map)
+
+        final_parent = key
+        
+        if key is startNode:
+            break
+
+    cv.imshow("Path Generation", map)
+    cv.waitKey(0)
+
 def Dijkstra_algo(startNode, goalNode, map):
     
     closed_list = {}    
