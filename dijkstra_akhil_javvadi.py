@@ -168,6 +168,55 @@ def actionMoveTopLeft(CurrentNode,map):
 
     return (Status, NextNode)
 
+def Dijkstra_algo(startNode, goalNode, map):
+    
+    closed_list = {}    
+    opened_list = PriorityQueue()    
+
+    opened_list.put((0, startNode, startNode))
+    visited = set()  # Track visited nodes to avoid duplicates
+    
+    start_time = time.time()
+    while not opened_list.empty():
+        
+        cost_to_come, present_node, parent_node = opened_list.get()
+        present_node = tuple(present_node)  # Convert list to tuple
+        visited.add(present_node)  # Mark present node as visited
+        
+        closed_list[(present_node[0], present_node[1])] = parent_node
+        
+        if isGoalNode(present_node, goalNode):
+            print("\n Goal reached!")
+            end_time = time.time()
+            print("\nTime: "+str(round((end_time-start_time), 4)) + " [secs]")
+            back_Tracking_Algo(goalNode, startNode, closed_list, map)
+            return True
+
+        for action in [actionMoveTop, actionMoveTopRight, actionMoveRight,
+               actionMoveBottomRight, actionMoveBottom, actionMoveBottomLeft,
+               actionMoveLeft, actionMoveTopLeft]:
+            flag, child_node = action(present_node, map)
+            child_node_tuple = tuple(child_node)  # Convert list to tuple
+            if flag is True and child_node_tuple not in visited:
+                if not isGoalNode(child_node_tuple, goalNode):
+                    cost = cost_to_come + (1 if action in [actionMoveTop, actionMoveRight,
+                                                            actionMoveBottom, actionMoveLeft] else 1.4)
+                    child_node = list(child_node_tuple)  # Convert tuple back to list for further processing
+                    opened_list.put((cost, child_node, present_node))
+                    visited.add(child_node_tuple)  # Add tuple to visited set
+                else:
+                    print("\nGoal reached!")
+                    end_time = time.time()
+                    print("\nTime: "+str(round((end_time-start_time), 4)) + " [secs]")
+                    closed_list[child_node_tuple] = present_node
+                    back_Tracking_Algo(goalNode, startNode, closed_list, map)
+                    return True
+
+
+
+    print("\n No path found between the start and goal explored_nodes") 
+    return False
+
 # Calling the map generating functions 
 if __name__ == '__main__':
 # display map with original obstracles  
@@ -181,5 +230,7 @@ if __name__ == '__main__':
     if (checkInputFeasibility(x_start, y_start, x_goal, y_goal, map)):
         startNode = [x_start, y_start]
         goalNode = [x_goal, y_goal]
+
+        res = Dijkstra_algo(startNode, goalNode, map)
 
         cv.destroyAllWindows()
